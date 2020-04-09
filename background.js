@@ -17,4 +17,4 @@ class Background {
         this.ctx.drawImage(this.image, this.posX, this.posY, this.width, this.height / 2);
     }
 
-}
+} 

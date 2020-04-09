@@ -8,19 +8,20 @@ class Bullets {
         this.playerPosX0 = playerPosX0
         this.playerHeight = playerHeight;
 
-        this.width = 10
-        this.height = 10
+        this.width = 15
+        this.height = 15
         this.velX = 0;
         this.velY = -10;
+
+        this.image = new Image()
+        this.image.src = "new_bullet.png"
 
 
     }
 
     draw() {
 
-
-        this.ctx.fillStyle = "white"
-        this.ctx.fillRect(this.posX, this.posY, this.width, this.height)
+        this.ctx.drawImage(this.image, this.posX, this.posY, this.width, this.height)
 
     }
 
