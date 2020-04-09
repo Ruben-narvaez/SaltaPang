@@ -146,7 +146,10 @@ const game = {
 
     win() {
         if (this.balls.length == 0) {
-            console.log("WIN MOTHERFOCA!")
+            this.ctx.font = "bold 100px Luckiest Guy";
+            this.ctx.fillStyle = "white"
+            this.ctx.fillText("Win motherfoca!", 250, this.canvas.height / 2 - 30)
+            clearInterval(this.interval)
         }
     },
     
@@ -158,6 +161,7 @@ const game = {
                 this.player.height + this.player.posY > elm.posY) {
                 
                 elm.velY *= -1
+                elm.velX *= -1
                 this.lifes.pop()
                 elm.posY -= 10
 
@@ -192,8 +196,8 @@ const game = {
     gameOver() {
         if (this.lifes.length == 0) {
             this.ctx.font = "bold 100px Luckiest Guy";
-            this.ctx.fillStyle = "#7B68EE"
-            this.ctx.fillText("Try again", 350, this.canvas.height / 2 - 30)
+            this.ctx.fillStyle = "white"
+            this.ctx.fillText("Game over", 350, this.canvas.height / 2 - 30)
             clearInterval(this.interval)
         }
     }
