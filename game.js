@@ -61,9 +61,9 @@ const game = {
             }
             this.framesCounter++
             this.clear()
-            this.bottomLine()
             this.randomEnemy()
             this.drawAll()
+            this.bottomLine()
             this.moveAll()
             this.player.clearBullets()
             this.clearEnemy()

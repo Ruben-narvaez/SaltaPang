@@ -7,12 +7,14 @@ const game = {
     FPS: 60,
     framesCounter: 0,
 
-    backgroundMusic: new Audio("sound/music16bit.wav"),
+    backgroundMusic: new Audio("sound/zappapeaches.wav"),
     background: undefined,
     player: undefined,
     lifes: [],
     enemy: [],
+    enemySound: new Audio("sound/dogbark.wav"),
 
+    ballHitSound: new Audio("sound/heartless.wav"),
     balls: [],
     ballY: 80,
     ballVel: 3,
@@ -22,6 +24,7 @@ const game = {
     },
 
     time: 100,
+    gameOverSound: new Audio("sound/gameoveroficial.wav"),
 
     keys: {
         LEFT: 37,
@@ -61,8 +64,8 @@ const game = {
             }
             this.framesCounter++
             this.clear()
-            this.bottomLine()
             this.randomEnemy()
+            this.bottomLine()
             this.drawAll()
             this.moveAll()
             this.player.clearBullets()
@@ -108,18 +111,22 @@ const game = {
 
     randomEnemy() {
         if (this.framesCounter % 800 === 0 && this.time > 50) {
+            this.enemySound.play()
             this.enemy.push(new Enemy(this.ctx, this.canvas.width, this.canvas.height, 70, 70, this.blackScoreSize))
         }
 
         if (this.framesCounter % 400 === 0 && this.time <= 50) {
+            this.enemySound.play()
             this.enemy.push(new Enemy(this.ctx, this.canvas.width, this.canvas.height, 70, 70, this.blackScoreSize))
         }
 
         if (this.framesCounter % 200 === 0 && this.time <= 30) {
+            this.enemySound.play()
             this.enemy.push(new Enemy(this.ctx, this.canvas.width, this.canvas.height, 70, 70, this.blackScoreSize))
         }
 
         if (this.framesCounter % 100 === 0 && this.time <= 10) {
+            this.enemySound.play()
             this.enemy.push(new Enemy(this.ctx, this.canvas.width, this.canvas.height, 70, 70, this.blackScoreSize))
         }
 
@@ -194,9 +201,9 @@ const game = {
                 this.player.posX + this.player.width > elm.posX &&
                 this.player.posY <= elm.posY + elm.height &&
                 this.player.height + this.player.posY > elm.posY) {
-
                 elm.velY *= -1
                 elm.velX *= -1
+                this.ballHitSound.play()
                 if (!this.player.isJumping) { this.lifes.pop() }
                 elm.posY -= 10
             }
@@ -259,7 +266,11 @@ const game = {
     },
 
     gameOver() {
+
         if (this.lifes.length == 0 || this.time == 0) {
+            this.backgroundMusic.pause()
+            this.gameOverSound.play()
+
             this.ctx.font = "bold 100px Luckiest Guy"
             this.ctx.fillStyle = "white"
             this.ctx.fillText("Game over", 350, this.canvas.height / 2 - 30)

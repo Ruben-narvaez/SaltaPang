@@ -17,6 +17,8 @@ class Player {
         this.image.frames = 8
         this.framesIndex = 0
 
+        //this.bulletsSound = new Audio("sound/bullet.wav")
+
         this.posX = (gameWidth / 2) - (this.width / 2)
         this.posY = gameHeight - this.height - blackScoreSize + 10
         this.posY0 = this.posY
@@ -63,6 +65,7 @@ class Player {
 
     shoot() {
         this.bullets.push(new Bullets(this.ctx, this.posX, this.posY, this.posX0, this.posY0, this.width, this.height))
+       // this.bulletsSound.play()
     }
 
 
