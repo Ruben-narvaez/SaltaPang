@@ -7,6 +7,7 @@ const game = {
     FPS: 60,
     framesCounter: 0,
 
+    backgroundMusic: new Audio("sound/zappapeaches.wav"),
     background: undefined,
     player: undefined,
     lifes: [],
@@ -52,6 +53,8 @@ const game = {
 
     start() {
         this.reset()
+        //this.backgroundMusic.muted = true
+        this.backgroundMusic.play()
         this.interval = setInterval(() => {
             if (this.framesCounter > 5000) {
                 this.framesCounter = 0
@@ -74,6 +77,7 @@ const game = {
             this.gameOver()
             this.win()
         }, 1000 / this.FPS)
+
     },
 
     bottomLine() {
@@ -89,7 +93,7 @@ const game = {
         this.background = new Background(this.ctx, this.width, this.height, "Background.png")
         this.player = new Player(this.ctx, this.canvas.width, this.canvas.height, 70, 70, this.keys, this.blackScoreSize)
         this.balls.push(new Balls(this.ctx, this.blackScoreSize, this.ballY, (this.canvas.width / 3) - this.firstBallSize.width, this.canvas.width, this.canvas.height, this.firstBallSize.width, this.firstBallSize.height, this.ballVel * -1, 0.1, this.ballY))
-        this.balls.push(new Balls(this.ctx, this.blackScoreSize, this.ballY, this.canvas.width / 3 + this.canvas.width / 3 , this.canvas.width, this.canvas.height, this.firstBallSize.width, this.firstBallSize.height, this.ballVel, 0.1, this.ballY))
+        this.balls.push(new Balls(this.ctx, this.blackScoreSize, this.ballY, this.canvas.width / 3 + this.canvas.width / 3, this.canvas.width, this.canvas.height, this.firstBallSize.width, this.firstBallSize.height, this.ballVel, 0.1, this.ballY))
 
         this.lifes.push(new Heart(this.ctx, 450, this.canvas.height - 135))
         this.lifes.push(new Heart(this.ctx, 500, this.canvas.height - 135))
@@ -103,9 +107,22 @@ const game = {
     },
 
     randomEnemy() {
-        if (this.framesCounter % 800 === 0) {
+        if (this.framesCounter % 800 === 0 && this.time > 50) {
             this.enemy.push(new Enemy(this.ctx, this.canvas.width, this.canvas.height, 70, 70, this.blackScoreSize))
         }
+
+        if (this.framesCounter % 400 === 0 && this.time <= 50) {
+            this.enemy.push(new Enemy(this.ctx, this.canvas.width, this.canvas.height, 70, 70, this.blackScoreSize))
+        }
+
+        if (this.framesCounter % 200 === 0 && this.time <= 30) {
+            this.enemy.push(new Enemy(this.ctx, this.canvas.width, this.canvas.height, 70, 70, this.blackScoreSize))
+        }
+
+        if (this.framesCounter % 100 === 0 && this.time <= 10) {
+            this.enemy.push(new Enemy(this.ctx, this.canvas.width, this.canvas.height, 70, 70, this.blackScoreSize))
+        }
+
     },
 
     clearEnemy() {
@@ -146,7 +163,7 @@ const game = {
     },
 
     jumpingCollision() {
-       
+
         if (this.player.posY < this.canvas.height - this.blackScoreSize - this.player.height) {
             this.player.isJumping = true
         } else {
@@ -233,15 +250,16 @@ const game = {
 
     setListeners() {
         document.addEventListener('keydown', (e) => {
-            
+
             if (e.keyCode === 80) {
                 console.log("puladas")
                 this.restart()
-            }      
+            }
         })
     },
 
     gameOver() {
+        this.backgroundMusic.pause()
         if (this.lifes.length == 0 || this.time == 0) {
             this.ctx.font = "bold 100px Luckiest Guy"
             this.ctx.fillStyle = "white"
