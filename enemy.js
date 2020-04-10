@@ -24,8 +24,7 @@ class Enemy {
 
     }
 
-    draw() {
-                
+    draw() {             
         this.ctx.drawImage(
             this.image,
             (Math.floor(this.framesIndex) * Math.floor(this.image.width / this.image.frames)) + (this.image.width / 2),
@@ -36,9 +35,8 @@ class Enemy {
             this.posY,
             this.width,
             this.height
-        );
-        this.animate();
-
+        )
+        this.animate()
     }
 
     animate() {
@@ -48,12 +46,8 @@ class Enemy {
         }
     }
 
-    
-
     move() {
-
         this.posX -= this.vel
-
     }
 
 }

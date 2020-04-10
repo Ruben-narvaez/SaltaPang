@@ -23,14 +23,18 @@ class Player {
         this.posX0 = this.posX
 
         this.keys = keys
+        this.keyState = {
+            keyLeft: false,
+            keyRight: false,
+        }
 
-        this.velPlayer = 14
+        this.velPlayer = 3
 
         this.velY = 1
         this.gravity = 0.4
 
         this.bullets = []
-
+        this.isJumping = false
         this.setListeners()
     }
 
@@ -46,10 +50,8 @@ class Player {
             this.posY,
             this.width,
             this.height
-        );
-           
-        this.animate();
-
+        )
+        this.animate()
     }
 
     animate() {
@@ -60,35 +62,38 @@ class Player {
     }
 
     shoot() {
-        this.bullets.push(new Bullets(this.ctx, this.posX, this.posY, this.posX0, this.posY0, this.width, this.height));
+        this.bullets.push(new Bullets(this.ctx, this.posX, this.posY, this.posX0, this.posY0, this.width, this.height))
     }
 
 
     clearBullets() {
-        this.bullets = this.bullets.filter(bull => bull.posY > 0);
+        this.bullets = this.bullets.filter(bull => bull.posY > 0)
     }
 
     move(direction) {
-        
-        if (this.posX >= this.gameWidth - this.width) {
-            this.posX = this.gameWidth - this.width
+
+        if (this.keyState.keyRight && this.posX <= this.gameWidth - this.width) {
+            this.posX += this.velPlayer
         }
 
-        if (this.posX <= 0) {
-            this.posX = 0
+        if (this.keyState.keyLeft && this.posX >= 0) {
+            this.posX -= this.velPlayer
         }
 
         if (this.posY < this.posY0) {
-            this.posY += this.velY;
-            this.velY += this.gravity;
+            this.posY += this.velY
+            this.velY += this.gravity
         } else {
-            this.posY = this.posY0;
-            this.velY = 1;
+            this.posY = this.posY0
+            this.velY = 1
         }
 
-        direction === 'right' ? this.posX += this.velPlayer : null
-        direction === 'left' ? this.posX -= this.velPlayer : null
-
+        if (this.keyState.keyLeft === true) {
+            this.posX -= this.velPlayer
+        }
+        if (this.keyState.keyRight === true) {
+            this.posX += this.velPlayer
+        }
     }
 
     setListeners() {
@@ -96,23 +101,30 @@ class Player {
             switch (e.keyCode) {
                 case this.keys.SPACE:
                     if (this.posY >= this.posY0) {
-                        this.posY -= 60;
-                        this.velY -= 8;
+                        this.posY -= 60
+                        this.velY -= 8
                     }
                     this.move("up")
-
                     break;
                 case this.keys.C:
-                    this.shoot();
+                    this.shoot()
                     break;
+
+
+            }
+            if (e.keyCode === this.keys.RIGHT) { this.keyState.keyRight = true }
+            if (e.keyCode === this.keys.LEFT) { this.keyState.keyLeft = true }
+        })
+
+        document.addEventListener("keyup", e => {
+            switch (e.keyCode) {
                 case this.keys.RIGHT:
-                    this.move("right")
+                    this.keyState.keyRight = false
                     break;
                 case this.keys.LEFT:
-                    this.move("left")
+                    this.keyState.keyLeft = false
                     break;
             }
-        });
+        })
     }
-
 }
